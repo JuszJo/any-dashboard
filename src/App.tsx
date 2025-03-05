@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter, createRoutesFromChildren, Route } from "react-router-dom"
+import { RouterProvider, createBrowserRouter, createRoutesFromChildren, Route, Navigate } from "react-router-dom"
 
 import Dashboard from "./pages/dashboard/Dashboard"
 import Login from "./pages/auth/Login"
@@ -9,6 +9,7 @@ import AuthLayout from "./layouts/AuthLayout"
 
 const router = createBrowserRouter(createRoutesFromChildren([
   <Route errorElement={<div>Something Went Wrong</div>}>
+    <Route index element={<Navigate to={"login"} replace={true} />} />
     <Route path="login" element={<Login />} />,
     <Route path="signup" element={<Signup />} />,
     <Route path="dashboard" element={<AuthLayout />}>
