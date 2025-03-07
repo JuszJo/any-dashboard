@@ -1,5 +1,3 @@
-"use client"
-
 import { CreditCard, Wallet } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
