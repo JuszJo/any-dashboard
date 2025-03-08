@@ -1,5 +1,13 @@
 import { RouterProvider, createBrowserRouter, createRoutesFromChildren, Route, Navigate } from "react-router-dom"
 
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+
+// Create a client
+const queryClient = new QueryClient()
+
 import Dashboard from "./pages/dashboard/Dashboard"
 import Login from "./pages/auth/Login"
 
@@ -20,7 +28,11 @@ const router = createBrowserRouter(createRoutesFromChildren([
 ]))
 
 function App() {
-  return <RouterProvider router={router} />
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  )
 }
 
 export default App;
