@@ -15,10 +15,8 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
 
-import { Eye, EyeOff } from "lucide-react"
-
-import { useState } from "react"
 import { userLogin } from "@/api/api"
+import { PasswordInput } from "./custom/password-input"
 
 const LoginValidator = z.object({
   username: z.string().min(3, "Username must be atleast 2 characters."),
@@ -54,8 +52,6 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
       })
     }
   }
-
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -119,24 +115,11 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                         <FormItem>
                           <FormLabel>Password</FormLabel>
                           <FormControl>
-                            <div className="relative">
-                              <Input
-                                placeholder="--------"
-                                {...field}
-                                type={showPassword ? "text" : "password"}
-                                className="pr-10"
-                              />
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="lg"
-                                className="absolute right-1 top-1/2 -translate-y-1/2 h-[80%] px-3 py-2 text-muted-foreground hover:text-foreground"
-                                onClick={() => setShowPassword(!showPassword)}
-                                aria-label={showPassword ? "Hide password" : "Show password"}
-                              >
-                                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                              </Button>
-                            </div>
+                            <PasswordInput
+                              placeholder="--------"
+                              {...field}
+                              className="pr-10"
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
