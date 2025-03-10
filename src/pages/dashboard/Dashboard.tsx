@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import { useQuery } from "@tanstack/react-query"
+import { Link } from "react-router-dom"
 
 export default function Dashboard() {
   const { data, isLoading, error } = useQuery({
@@ -28,8 +29,12 @@ export default function Dashboard() {
     },
   })
 
+  // if(error && !isLoading) {
+  //   return <div>Error</div>
+  // }
+
   if(error && !isLoading) {
-    return <div>Error</div>
+    console.log(error);
   }
 
   if(data) {
@@ -54,6 +59,7 @@ export default function Dashboard() {
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
                   <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                  <Link to={"test"}>TEST</Link>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>

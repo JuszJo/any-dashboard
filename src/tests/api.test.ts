@@ -20,7 +20,11 @@ describe("API", () => {
   it('logs in and sends token', async () => {
     const response = await userLogin(userObject);
 
+    console.log(response.data);
+    
     expect(response.data).toBeDefined();
+    expect(response.data.accessToken).toBeDefined();
+    expect(response.data.refreshToken).toBeDefined();
   });
 
   it('successfully completes a login flow and adds token to subsequent requests', async () => {
@@ -36,6 +40,7 @@ describe("API", () => {
     const response = await userLogin(userObject);
 
     expect(response.status).toBe(200);
-    expect(localStorageMock.setItem).toHaveBeenCalledWith("authToken", expect.anything());
+    expect(localStorageMock.setItem).toHaveBeenCalledWith("accessToken", expect.anything());
+    expect(localStorageMock.setItem).toHaveBeenCalledWith("refreshToken", expect.anything());
   })
 })

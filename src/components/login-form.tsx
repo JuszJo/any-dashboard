@@ -19,8 +19,8 @@ import { userLogin } from "@/api/api"
 import { PasswordInput } from "./custom/password-input"
 
 const LoginValidator = z.object({
-  username: z.string().min(3, "Username must be atleast 2 characters."),
-  password: z.string().min(3, "Password must be atleast 2 characters."),
+  username: z.string().min(3, "Username must be atleast 3 characters."),
+  password: z.string().min(3, "Password must be atleast 3 characters."),
 })
 
 type LoginSchema = z.infer<typeof LoginValidator>
@@ -65,7 +65,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="grid gap-6">
+              <div className="grid gap-4">
                 <div className="flex flex-col gap-4">
                   <Button variant="outline" className="w-full">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -91,7 +91,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                     Or continue with
                   </span>
                 </div>
-                <div className="grid gap-6">
+                <div className="grid gap-4">
                   <div className="grid gap-2">
                     <FormField
                       control={form.control}
@@ -137,6 +137,9 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                   Don&apos;t have an account?{" "}
                   <Link to={"/signup"} className="underline underline-offset-4">
                     Sign up
+                  </Link>
+                  <Link to={"/dashboard"} className="underline underline-offset-4">
+                    db
                   </Link>
                 </div>
               </div>
