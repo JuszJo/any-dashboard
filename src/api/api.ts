@@ -12,36 +12,42 @@ export const apiClient = axios.create({
 })
 
 async function handleTokenMiddlewareError(error: AxiosError) {
-  const originalRequest = error.config as InternalAxiosRequestConfig<any>;
+  const originalRequest = error.config as InternalAxiosRequestConfig<any>; 
 
-  const responseData = error.response?.data as any;
-
-  if ((responseData.error as string) === "expired") {
-    try {
-      const refreshToken = localStorage.getItem("refreshToken");
-
-      if (!refreshToken) {
-        throw Error("No refresh token available");
+  if(error.response) {
+    const responseData = error.response.data as any;  
+  
+    if (responseData.error && responseData.error === "expired") {
+      try {
+        const refreshToken = localStorage.getItem("refreshToken");
+  
+        if (!refreshToken) {
+          throw Error("No refresh token available");
+        }
+  
+        const { data } = await axios.post(`${serverName}/api/auth/refresh`, {
+          refreshToken,
+        });
+  
+        localStorage.setItem("accessToken", data.accessToken);
+  
+        originalRequest.headers["Authorization"] = `Bearer ${data.accessToken}`;
+  
+        return apiClient(originalRequest);
       }
-
-      const { data } = await axios.post(`${serverName}/api/auth/refresh`, {
-        refreshToken,
-      });
-
-      localStorage.setItem("accessToken", data.accessToken);
-
-      originalRequest.headers["Authorization"] = `Bearer ${data.accessToken}`;
-
-      return apiClient(originalRequest);
+      catch (refreshError) {
+        console.error("Refresh token request failed", refreshError);
+  
+        return Promise.reject(refreshError);
+      }
     }
-    catch (refreshError) {
-      console.error("Refresh token request failed", refreshError);
-
-      return Promise.reject(refreshError);
+    else {
+      return Promise.reject(error);
     }
   }
-
-  return Promise.reject(error);
+  else {
+    return Promise.reject(error);
+  }
 }
 
 function handleRequestTokenMiddleware(config: InternalAxiosRequestConfig<any>) {

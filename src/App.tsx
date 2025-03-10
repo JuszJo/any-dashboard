@@ -18,11 +18,11 @@ import AuthLayout from "./layouts/AuthLayout"
 const router = createBrowserRouter(createRoutesFromChildren([
   <Route errorElement={<div>Something Went Wrong</div>}>
     <Route index element={<Navigate to={"login"} replace={true} />} />
-    <Route path="login" element={<Login />} />,
-    <Route path="signup" element={<Signup />} />,
+    <Route path="login" element={<Login />} />
+    <Route path="signup" element={<Signup />} />
     <Route path="dashboard" element={<AuthLayout />}>
-      <Route index element={<Dashboard />} />,
-      <Route path="test" element={<h1>TEST</h1>} />,
+      <Route index element={<Dashboard />} />
+      <Route path="test" element={<h1>TEST</h1>} />
     </Route>
     <Route path="*" element={<div>Not Found</div>} />
   </Route>

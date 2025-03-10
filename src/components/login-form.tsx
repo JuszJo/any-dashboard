@@ -17,10 +17,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 
 import { userLogin } from "@/api/api"
 import { PasswordInput } from "./custom/password-input"
+import { AxiosError } from "axios"
 
 const LoginValidator = z.object({
-  username: z.string().min(3, "Username must be atleast 3 characters."),
-  password: z.string().min(3, "Password must be atleast 3 characters."),
+  username: z.string().min(3, "Username must be at least 3 characters."),
+  password: z.string().min(3, "Password must be at least 3 characters."),
 })
 
 type LoginSchema = z.infer<typeof LoginValidator>
@@ -45,11 +46,31 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
       navigate("/dashboard");
     }
     catch (error) {
-      console.log(error);
-      
-      form.setError("root.serverError", {
-        message: "Login failed, please try again later"
-      })
+      if (error instanceof AxiosError) {
+        if (error.status == 401) {
+          form.setError("username", {
+            message: "Username may be incorrect"
+          })
+
+          form.setError("password", {
+            message: "Password may be incorrect"
+          })
+        }
+        else {
+          console.log(error);
+
+          form.setError("root.serverError", {
+            message: "Login failed, please try again later"
+          })
+        }
+      }
+      else {
+        console.log(error);
+
+        form.setError("root.serverError", {
+          message: "Login failed, please try again later"
+        })
+      }
     }
   }
 
@@ -137,9 +158,6 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                   Don&apos;t have an account?{" "}
                   <Link to={"/signup"} className="underline underline-offset-4">
                     Sign up
-                  </Link>
-                  <Link to={"/dashboard"} className="underline underline-offset-4">
-                    db
                   </Link>
                 </div>
               </div>
